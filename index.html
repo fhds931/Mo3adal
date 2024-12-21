@@ -1,0 +1,1329 @@
+<html><head><base href="/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2Bacsh - &#x62a;&#x637;&#x628;&#x64a;&#x642; &#x627;&#x644;&#x62d;&#x633;&#x627;&#x628; &#x644;&#x644;&#x62b;&#x627;&#x646;&#x64a;&#x629; &#x628;&#x627;&#x643;&#x627;&#x644;&#x648;&#x631;&#x64a;&#x627; &#x639;&#x644;&#x648;&#x645; &#x625;&#x646;&#x633;&#x627;&#x646;&#x64a;&#x629;</title>
+<style>
+  body {
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    margin: 0;
+    padding: 10px;
+    background: #f0f2f5;
+  }
+
+  #loginPage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+      #1a237e 0%,
+      #0d47a1 25%,
+      #1565c0 50%,
+      #1976d2 75%,
+      #2196f3 100%
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow: hidden;
+  }
+
+  #loginPage::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 1%, transparent 1%),
+      radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 1%, transparent 1%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff' opacity='0.05'%3E%3Cpath d='M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z'/%3E%3C/svg%3E");
+    background-size: 100px 100px;
+    animation: patternMove 60s linear infinite;
+    opacity: 0.5;
+  }
+
+  @keyframes patternMove {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 100px 100px;
+    }
+  }
+
+  @keyframes shine {
+    0% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 0.3;
+    }
+  }
+
+  .login-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 30px 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    width: 85%;
+    max-width: 350px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .login-card::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 100px;
+    height: 100px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232196f3' opacity='0.1'%3E%3Cpath d='M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    transform: rotate(-15deg);
+    z-index: 0;
+  }
+
+  .login-card::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: -40px;
+    width: 80px;
+    height: 80px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232196f3' opacity='0.1'%3E%3Cpath d='M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    transform: rotate(15deg);
+    z-index: 0;
+  }
+
+  .login-logo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+    background: #f0f2f5;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .login-input, .gender-select {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 0.9em;
+    width: 100%;
+  }
+
+  .login-input:focus, .gender-select:focus {
+    border-color: #2196f3;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+  }
+
+  .invalid-input {
+    border-color: #f44336 !important;
+    box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.1) !important;
+    animation: shake 0.5s;
+  }
+
+  .error-message {
+    color: #f44336;
+    font-size: 0.8em;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    text-align: right;
+    display: none;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+  }
+
+  .password-hint {
+    font-size: 0.75em;
+    color: #666;
+    margin: 2px 0 8px;
+    text-align: right;
+  }
+
+  .login-btn {
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    font-size: 0.95em;
+  }
+
+  .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+  }
+
+  .login-card h2 {
+    font-size: 1.3em;
+    margin: 0 0 5px 0;
+    color: #333;
+  }
+
+  .login-card p {
+    font-size: 0.9em;
+    color: #666;
+    margin: 0 0 15px 0;
+  }
+
+  @media (max-width: 480px) {
+    .login-card {
+      padding: 30px 20px;
+      width: 85%;
+    }
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .header {
+    background: linear-gradient(135deg, #c1272d 0%, #006233 100%);
+    color: white;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 150px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500' opacity='0.1'%3E%3Cpath fill='%23ffffff' d='M242.7 228.7l-74.6 53.1 28.5-87.7-74.6-53.1h92.3l28.5-87.7 28.5 87.7h92.3l-74.6 53.1 28.5 87.7z'/%3E%3C/svg%3E") no-repeat center;
+    opacity: 0.2;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' opacity='0.1'%3E%3Cpath fill='%23ffffff' d='M30,50 L70,50 M50,30 L50,70' stroke='white' stroke-width='2'/%3E%3C/svg%3E"),
+                      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' opacity='0.1'%3E%3Cpath fill='none' stroke='white' d='M20,80 L40,80 L40,20 L60,20 L60,80 L80,80' stroke-width='2'/%3E%3C/svg%3E");
+    background-position: 10% 50%, 90% 50%;
+    background-repeat: no-repeat;
+    background-size: 40px, 40px;
+    opacity: 0.2;
+  }
+
+  .header h1 {
+    margin-bottom: 5px;
+    position: relative;
+    z-index: 1;
+    font-size: 1.8em;
+  }
+
+  .header p {
+    font-size: 0.9em;
+    margin-top: 0;
+    margin-bottom: 5px;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .header .subtitle {
+    font-size: 0.8em;
+    margin: 0;
+    opacity: 0.8;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .study-tools {
+    padding: 10px;
+  }
+  
+  .tool-card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232196f3' opacity='0.1'%3E%3Cpath d='M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    opacity: 0.5;
+  }
+
+  .subject-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    background: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .subject-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .subject-name {
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    flex: 1;
+    margin-left: 10px;
+    text-align: center;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(33, 150, 243, 0.2);
+  }
+
+  .grade-input {
+    width: 70px;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Cairo', sans-serif;
+    text-align: center;
+    font-size: 1.1em;
+    transition: all 0.3s;
+  }
+
+  .grade-input:focus {
+    border-color: #2196f3;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+  }
+
+  .calculate-btn, .clear-btn {
+    padding: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  .calculate-btn {
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  }
+
+  .clear-btn {
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  }
+
+  .calculate-btn:hover, .clear-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .total-section {
+    background: linear-gradient(135deg, #1976d2 0%, #2196f3 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    margin-top: 30px;
+  }
+
+  .total-label {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+  }
+
+  .total-value {
+    font-size: 2.5em;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .coefficient {
+    font-size: 0.8em;
+    color: #666;
+    margin-right: 5px;
+  }
+
+  @media (max-width: 480px) {
+    .header h1 {
+      font-size: 1.5em;
+    }
+    
+    .header p {
+      font-size: 0.8em;
+    }
+    
+    .header .subtitle {
+      font-size: 0.7em;
+    }
+    
+    .subject-name {
+      font-size: 0.9em;
+      padding: 6px 10px;
+    }
+
+    .grade-input {
+      width: 50px;
+      padding: 6px;
+    }
+  }
+
+  .footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    font-size: 0.9em;
+    color: #666;
+  }
+
+  .footer .copyright {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .footer .social {
+    margin-top: 10px;
+    color: #2196f3;
+    text-decoration: none;
+  }
+
+  .footer .social:hover {
+    text-decoration: underline;
+  }
+
+  .footer .morocco-flag {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  
+  .back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 2;
+    font-family: 'Cairo', sans-serif;
+    box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+  }
+
+  .back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+  }
+
+  #optionsPage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #1a237e 0%, #0d47a1 25%, #1565c0 50%, #1976d2 75%, #2196f3 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .options-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    width: 85%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .options-card::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232196f3' opacity='0.1'%3E%3Cpath d='M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7V7h10v2z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+  }
+
+  .option-btn {
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    margin: 10px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s;
+  }
+
+  .option-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+  }
+
+  .subject-grade-calc {
+    padding: 20px;
+  }
+
+  .subject-select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+  }
+
+  .grade-inputs {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .grade-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .grade-input-group label {
+    font-size: 0.9em;
+    color: #666;
+  }
+
+  .subject-result {
+    margin-top: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #1976d2 0%, #2196f3 100%);
+    border-radius: 10px;
+    color: white;
+  }
+
+  .subject-average {
+    font-size: 2em;
+    font-weight: bold;
+  }
+  
+  .login-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: rgba(33, 150, 243, 0.1);
+    color: #2196f3;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    transition: all 0.3s;
+  }
+
+  .tab-btn.active {
+    background: #2196f3;
+    color: white;
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  /* Add new styles for the sidebar */
+  .sidebar {
+    position: fixed;
+    right: -300px;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background: white;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    transition: right 0.3s ease;
+    z-index: 999;
+    padding: 20px;
+    direction: rtl;
+  }
+
+  .sidebar.open {
+    right: 0;
+  }
+
+  .sidebar-toggle {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    background: #2196f3;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  .user-info {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .user-avatar {
+    width: 80px;
+    height: 80px;
+    background: #e3f2fd;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+
+  .theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+
+  input:checked + .slider {
+    background-color: #2196f3;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+
+  /* Dark mode styles */
+  body.dark-mode {
+    background: #1a1a1a;
+    color: #fff;
+  }
+
+  body.dark-mode .sidebar {
+    background: #2d2d2d;
+    color: #fff;
+  }
+
+  body.dark-mode .login-card,
+  body.dark-mode .options-card,
+  body.dark-mode .tool-card {
+    background: #2d2d2d;
+    color: #fff;
+  }
+
+  body.dark-mode .grade-input,
+  body.dark-mode .login-input {
+    background: #3d3d3d;
+    color: #fff;
+    border-color: #4d4d4d;
+  }
+
+  body.dark-mode .subject-item {
+    background: #2d2d2d;
+  }
+  
+  .avatar-options {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 15px 0;
+  }
+
+  .avatar-option {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: all 0.3s;
+  }
+
+  .avatar-option:hover {
+    transform: scale(1.1);
+  }
+
+  .avatar-option.selected {
+    border: 2px solid #2196f3;
+    background: rgba(33, 150, 243, 0.1);
+  }
+
+  .avatar-option svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+  }
+
+  .login-logo svg {
+    animation: float 3s ease-in-out infinite;
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&amp;display=swap" rel="stylesheet">
+</head>
+<body>
+<button class="sidebar-toggle" onclick="toggleSidebar()">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+  </svg>
+</button>
+
+<div class="sidebar">
+  <div class="user-info">
+    <div class="user-avatar" id="userAvatar">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="#2196f3">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+      </svg>
+    </div>
+    <div class="avatar-options">
+      <div class="avatar-option" data-avatar="student">
+        <svg viewBox="0 0 24 24" fill="#2196f3">
+          <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+        </svg>
+      </div>
+      <div class="avatar-option" data-avatar="book">
+        <svg viewBox="0 0 24 24" fill="#2196f3">
+          <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
+        </svg>
+      </div>
+      <div class="avatar-option" data-avatar="pencil">
+        <svg viewBox="0 0 24 24" fill="#2196f3">
+          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+        </svg>
+      </div>
+      <div class="avatar-option" data-avatar="calculator">
+        <svg viewBox="0 0 24 24" fill="#2196f3">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
+        </svg>
+      </div>
+      <div class="avatar-option" data-avatar="science">
+        <svg viewBox="0 0 24 24" fill="#2196f3">
+          <path d="M20.71 5.63l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-3.12 3.12-1.93-1.91-1.41 1.41 1.42 1.42L3 16.25V21h4.75l8.92-8.92 1.42 1.42 1.41-1.41-1.92-1.92 3.12-3.12c.4-.4.4-1.03.01-1.42zM6.92 19L5 17.08l8.06-8.06 1.92 1.92L6.92 19z"/>
+        </svg>
+      </div>
+    </div>
+    <h3 id="userDisplayName">اسم المستخدم</h3>
+  </div>
+  
+  <div class="theme-toggle">
+    <span>الوضع الليلي</span>
+    <label class="theme-switch">
+      <input type="checkbox" onchange="toggleTheme()">
+      <span class="slider"></span>
+    </label>
+  </div>
+</div>
+<div id="loginPage">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="#2196f3">
+        <path d="M12 2L1 21h22L12 2zm0 3.83L19.13 19H4.87L12 5.83z"/>
+        <path d="M11 10h2v6h-2z"/>
+        <circle cx="12" cy="17" r="1"/>
+      </svg>
+    </div>
+    <h2>&#x645;&#x631;&#x62d;&#x628;&#x627;&#x64b; &#x628;&#x643;</h2>
+    <div id="loginTabs" class="login-tabs">
+      <button class="tab-btn active" onclick="switchTab(&apos;newUser&apos;)">&#x62a;&#x633;&#x62c;&#x64a;&#x644; &#x644;&#x623;&#x648;&#x644; &#x645;&#x631;&#x629;</button>
+      <button class="tab-btn" onclick="switchTab(&apos;existingUser&apos;)">&#x644;&#x62f;&#x64a;&#x643; &#x62d;&#x633;&#x627;&#x628;</button>
+    </div>
+    <div id="newUserForm" class="tab-content active">
+      <p>&#x627;&#x644;&#x631;&#x62c;&#x627;&#x621; &#x62a;&#x633;&#x62c;&#x64a;&#x644; &#x627;&#x644;&#x62f;&#x62e;&#x648;&#x644; &#x644;&#x644;&#x645;&#x62a;&#x643;&#x627;&#x645;&#x644;</p>
+      <input type="text" class="login-input" placeholder="&#x627;&#x633;&#x645; &#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;" id="username">
+      <input type="password" class="login-input" placeholder="&#x643;&#x644;&#x645;&#x629; &#x627;&#x644;&#x645;&#x631;&#x648;&#x631;" id="password">
+      <div class="error-message"></div>
+      <p class="password-hint">&#x64a;&#x62c;&#x628; &#x623;&#x646; &#x62a;&#x62d;&#x62a;&#x648;&#x64a; &#x643;&#x644;&#x645;&#x629; &#x627;&#x644;&#x645;&#x631;&#x648;&#x631; &#x639;&#x644;&#x649; 3 &#x623;&#x631;&#x642;&#x627;&#x645; &#x648; 4 &#x62d;&#x631;&#x648;&#x641; &#x625;&#x646;&#x633;&#x627;&#x646;&#x64a;&#x629; &#x639;&#x644;&#x649; &#x627;&#x644;&#x623;&#x642;&#x644;</p>
+      <select class="gender-select" id="gender">
+        <option value>&#x627;&#x62e;&#x62a;&#x631; &#x627;&#x644;&#x62c;&#x646;&#x633;</option>
+        <option value="male">&#x630;&#x643;&#x631;</option>
+        <option value="female">&#x623;&#x646;&#x62b;&#x649;</option>
+      </select>
+      <button class="login-btn" onclick="login()">&#x62a;&#x633;&#x62c;&#x64a;&#x644; &#x627;&#x644;&#x62f;&#x62e;&#x648;&#x644;</button>
+    </div>
+    <div id="existingUserForm" class="tab-content">
+      <p>&#x627;&#x644;&#x631;&#x62c;&#x627;&#x621; &#x625;&#x62f;&#x62e;&#x627;&#x644; &#x628;&#x64a;&#x627;&#x646;&#x627;&#x62a; &#x62d;&#x633;&#x627;&#x628;&#x643;</p>
+      <input type="text" class="login-input" placeholder="&#x627;&#x633;&#x645; &#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;" id="existingUsername">
+      <input type="password" class="login-input" placeholder="&#x643;&#x644;&#x645;&#x629; &#x627;&#x644;&#x645;&#x631;&#x648;&#x631;" id="existingPassword">
+      <div class="error-message"></div>
+      <button class="login-btn" onclick="loginExisting()">&#x62a;&#x633;&#x62c;&#x64a;&#x644; &#x627;&#x644;&#x62f;&#x62e;&#x648;&#x644;</button>
+    </div>
+  </div>
+</div>
+<div id="optionsPage" style="display: none;">
+  <div class="options-card">
+    <h2>&#x627;&#x62e;&#x62a;&#x631; &#x646;&#x648;&#x639; &#x627;&#x644;&#x62d;&#x633;&#x627;&#x628;</h2>
+    <button class="option-btn" onclick="showFinalGrades()">&#x62d;&#x633;&#x627;&#x628; &#x627;&#x644;&#x645;&#x639;&#x62f;&#x284; &#x627;&#x644;&#x646;&#x647;&#x627;&#x626;&#x64a;</button>
+    <button class="option-btn" onclick="showSubjectGrades()">&#x62d;&#x633;&#x627;&#x628; &#x645;&#x639;&#x62f;&#x284; &#x643;&#x644; &#x645;&#x627;&#x62f;&#x629;</button>
+    <button class="option-btn" onclick="fullLogout()">&#x62a;&#x633;&#x62c;&#x64a;&#x644; &#x627;&#x644;&#x62e;&#x631;&#x648;&#x62c;</button>
+  </div>
+</div>
+<div class="container" style="display: none;">
+  <button class="back-btn" onclick="logout()">&#x631;&#x62c;&#x648;&#x639;</button>
+  <div class="header">
+    <h1>2Bacsh</h1>
+    <p>&#x62a;&#x637;&#x628;&#x64a;&#x642; &#x627;&#x644;&#x62d;&#x633;&#x627;&#x628; &#x644;&#x644;&#x62b;&#x627;&#x646;&#x64a;&#x629; &#x628;&#x627;&#x643;&#x627;&#x644;&#x648;&#x631;&#x64a;&#x627; &#x639;&#x644;&#x648;&#x645; &#x625;&#x646;&#x633;&#x627;&#x646;&#x64a;&#x629;</p>
+    <p class="subtitle">&#x62b;&#x627;&#x646;&#x648;&#x64a;&#x629; &#x627;&#x644;&#x641;&#x627;&#x631;&#x627;&#x628;&#x64a;&#x627; &#x627;&#x644;&#x62a;&#x623;&#x647;&#x64a;&#x644;&#x64a;&#x629;</p>
+  </div>
+  
+  <div class="study-tools">
+    <div class="tool-card">
+      <h2>&#x627;&#x644;&#x645;&#x648;&#x627;&#x62f; &#x627;&#x644;&#x62f;&#x631;&#x627;&#x633;&#x64a;&#x629;</h2>
+      <div class="subjects-list">
+        <div class="subject-item">
+          <div class="subject-name">&#x627;&#x644;&#x641;&#x644;&#x633;&#x641;&#x629; <span class="coefficient">(&#x645;&#x639;&#x627;&#x645;&#x644; 4)</span></div>
+          <input type="number" class="grade-input" min="0" max="20" placeholder="&#x627;&#x644;&#x646;&#x642;&#x637;&#x629;" data-coefficient="4" onchange="validateGrade(this)">
+        </div>
+        <div class="subject-item">
+          <div class="subject-name">&#x627;&#x644;&#x625;&#x62c;&#x62a;&#x645;&#x627;&#x639;&#x64a;&#x627;&#x62a; <span class="coefficient">(&#x645;&#x639;&#x627;&#x645;&#x644; 4)</span></div>
+          <input type="number" class="grade-input" min="0" max="20" placeholder="&#x627;&#x644;&#x646;&#x642;&#x637;&#x629;" data-coefficient="4" onchange="validateGrade(this)">
+        </div>
+        <div class="subject-item">
+          <div class="subject-name">&#x627;&#x644;&#x644;&#x63a;&#x629; &#x627;&#x644;&#x625;&#x646;&#x62c;&#x644;&#x64a;&#x632;&#x64a;&#x629; <span class="coefficient">(&#x645;&#x639;&#x627;&#x645;&#x644; 3)</span></div>
+          <input type="number" class="grade-input" min="0" max="20" placeholder="&#x627;&#x644;&#x646;&#x642;&#x637;&#x629;" data-coefficient="3" onchange="validateGrade(this)">
+        </div>
+        <div class="subject-item">
+          <div class="subject-name">&#x627;&#x644;&#x644;&#x63a;&#x629; &#x627;&#x644;&#x639;&#x631;&#x628;&#x64a;&#x629; <span class="coefficient">(&#x645;&#x639;&#x627;&#x645;&#x644; 3)</span></div>
+          <input type="number" class="grade-input" min="0" max="20" placeholder="&#x627;&#x644;&#x646;&#x642;&#x637;&#x629;" data-coefficient="3" onchange="validateGrade(this)">
+        </div>
+        <div class="subject-item">
+          <div class="subject-name">&#x627;&#x644;&#x644;&#x63a;&#x629; &#x627;&#x644;&#x641;&#x631;&#x646;&#x633;&#x64a;&#x629; <span class="coefficient">(&#x645;&#x639;&#x627;&#x645;&#x644; 4)</span></div>
+          <input type="number" class="grade-input" min="0" max="20" placeholder="&#x627;&#x644;&#x646;&#x642;&#x637;&#x629;" data-coefficient="4" onchange="validateGrade(this)">
+        </div>
+        <div class="subject-item">
+          <div class="subject-name">&#x627;&#x644;&#x62a;&#x631;&#x628;&#x64a;&#x629; &#x627;&#x644;&#x625;&#x633;&#x644;&#x627;&#x645;&#x64a;&#x629; <span class="coefficient">(&#x645;&#x639;&#x627;&#x645;&#x644; 2)</span></div>
+          <input type="number" class="grade-input" min="0" max="20" placeholder="&#x627;&#x644;&#x646;&#x642;&#x637;&#x629;" data-coefficient="2" onchange="validateGrade(this)">
+        </div>
+        <div class="subject-item">
+          <div class="subject-name">&#x627;&#x644;&#x631;&#x64a;&#x627;&#x636;&#x64a;&#x627;&#x62a; <span class="coefficient">(&#x645;&#x639;&#x627;&#x645;&#x644; 1)</span></div>
+          <input type="number" class="grade-input" min="0" max="20" placeholder="&#x627;&#x644;&#x646;&#x642;&#x637;&#x629;" data-coefficient="1" onchange="validateGrade(this)">
+        </div>
+        <div class="subject-item">
+          <div class="subject-name">&#x627;&#x644;&#x62a;&#x631;&#x628;&#x64a;&#x629; &#x627;&#x644;&#x628;&#x62f;&#x646;&#x64a;&#x629; <span class="coefficient">(&#x645;&#x639;&#x627;&#x645;&#x644; 4)</span></div>
+          <input type="number" class="grade-input" min="0" max="20" placeholder="&#x627;&#x644;&#x646;&#x642;&#x637;&#x629;" data-coefficient="4" onchange="validateGrade(this)">
+        </div>
+        <div class="subject-item">
+          <div class="subject-name">&#x627;&#x644;&#x645;&#x648;&#x627;&#x638;&#x628;&#x629; &#x648; &#x627;&#x644;&#x633;&#x644;&#x648;&#x643; <span class="coefficient">(&#x645;&#x639;&#x627;&#x645;&#x644; 1)</span></div>
+          <input type="number" class="grade-input" min="0" max="20" placeholder="&#x627;&#x644;&#x646;&#x642;&#x637;&#x629;" data-coefficient="1" onchange="validateGrade(this)">
+        </div>
+      </div>
+      
+      <div class="button-group">
+        <button class="calculate-btn" onclick="calculateAverage()">&#x627;&#x62d;&#x633;&#x628; &#x627;&#x644;&#x645;&#x639;&#x62f;&#x284;</button>
+        <button class="clear-btn" onclick="clearAll()">&#x645;&#x633;&#x62d; &#x627;&#x644;&#x643;&#x644;</button>
+      </div>
+    </div>
+    
+    <div class="total-section">
+      <div class="total-label">&#x627;&#x644;&#x645;&#x639;&#x62f;&#x284; &#x627;&#x644;&#x639;&#x627;&#x645;</div>
+      <div class="total-value" id="average">-</div>
+    </div>
+  </div>
+  
+  <div class="footer">
+    <div class="copyright">
+      <div> 2024 &#x62c;&#x645;&#x64a;&#x639; &#x627;&#x644;&#x62d;&#x642;&#x648;&#x642; &#x645;&#x62d;&#x641;&#x648;&#x638;&#x629;</div>
+      <div>
+        <span>&#x62a;&#x635;&#x645;&#x64a;&#x645; &#x648;&#x62a;&#x637;&#x648;&#x64a;&#x631;:</span>
+        <strong>YAHYA THABIT</strong>
+        <span class="morocco-flag">&#x1f1f2;&#x1f1e6;</span>
+      </div>
+      <a href="https://www.instagram.com/yahya_tabit_" class="social" target="_blank">
+        &#x62a;&#x627;&#x628;&#x639;&#x646;&#x627; &#x639;&#x644;&#x649; &#x627;&#x644;&#x625;&#x646;&#x633;&#x62a;&#x63a;&#x631;&#x627;&#x645;: @yahya_tabit_
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="subjectGradesPage" class="container" style="display: none;">
+  <button class="back-btn" onclick="logout()">&#x631;&#x62c;&#x648;&#x639;</button>
+  <div class="header">
+    <h1>2Bacsh</h1>
+    <p>&#x62d;&#x633;&#x627;&#x628; &#x645;&#x639;&#x62f;&#x644; &#x627;&#x644;&#x645;&#x648;&#x627;&#x62f;</p>
+    <p class="subtitle">&#x62b;&#x627;&#x646;&#x648;&#x64a;&#x629; &#x627;&#x644;&#x641;&#x627;&#x631;&#x627;&#x628;&#x64a;&#x627; &#x627;&#x644;&#x62a;&#x623;&#x647;&#x64a;&#x644;&#x64a;&#x629;</p>
+  </div>
+  
+  <div class="study-tools">
+    <div class="tool-card">
+      <div class="subject-grade-calc">
+        <h3>&#x62d;&#x633;&#x627;&#x628; &#x645;&#x639;&#x62f;&#x644; &#x627;&#x644;&#x645;&#x627;&#x62f;&#x629;</h3>
+        <select id="subjectSelect" class="subject-select" onchange="handleSubjectChange()">
+          <option value>&#x627;&#x62e;&#x62a;&#x631; &#x627;&#x644;&#x645;&#x627;&#x62f;&#x629;</option>
+          <option value="philosophy">&#x627;&#x644;&#x641;&#x644;&#x633;&#x641;&#x629;</option>
+          <option value="social">&#x627;&#x644;&#x625;&#x62c;&#x62a;&#x645;&#x627;&#x639;&#x64a;&#x627;&#x62a;</option>
+          <option value="english">&#x627;&#x644;&#x644;&#x63a;&#x629; &#x627;&#x644;&#x625;&#x646;&#x62c;&#x644;&#x64a;&#x632;&#x64a;&#x629;</option>
+          <option value="arabic">&#x627;&#x644;&#x644;&#x63a;&#x629; &#x627;&#x644;&#x639;&#x631;&#x628;&#x64a;&#x629;</option>
+          <option value="french">&#x627;&#x644;&#x644;&#x63a;&#x629; &#x627;&#x644;&#x641;&#x631;&#x646;&#x633;&#x64a;&#x629;</option>
+          <option value="islamic">&#x627;&#x644;&#x62a;&#x631;&#x628;&#x64a;&#x629; &#x627;&#x644;&#x625;&#x633;&#x644;&#x627;&#x645;&#x64a;&#x629;</option>
+          <option value="math">&#x627;&#x644;&#x631;&#x64a;&#x627;&#x636;&#x64a;&#x627;&#x62a;</option>
+          <option value="sports">&#x627;&#x644;&#x62a;&#x631;&#x628;&#x64a;&#x629; &#x627;&#x644;&#x628;&#x62f;&#x646;&#x64a;&#x629;</option>
+        </select>
+        
+        <div class="grade-inputs">
+          <div class="grade-input-group">
+            <label>&#x627;&#x644;&#x623;&#x646;&#x634;&#x637;&#x629; &#x627;&#x644;&#x645;&#x646;&#x62f;&#x645;&#x62c;&#x629; (25%)</label>
+            <input type="number" class="grade-input" id="activities" min="0" max="20">
+          </div>
+          <div class="grade-input-group">
+            <label>&#x627;&#x644;&#x641;&#x631;&#x636; &#x627;&#x644;&#x623;&#x648;&#x644; (37.5%)</label>
+            <input type="number" class="grade-input" id="exam1" min="0" max="20">
+          </div>
+          <div class="grade-input-group">
+            <label>&#x627;&#x644;&#x641;&#x631;&#x636; &#x627;&#x644;&#x62b;&#x627;&#x646;&#x64a; (37.5%)</label>
+            <input type="number" class="grade-input" id="exam2" min="0" max="20">
+          </div>
+        </div>
+        
+        <button class="calculate-btn" onclick="calculateSubjectGrade()">&#x627;&#x62d;&#x633;&#x628; &#x627;&#x644;&#x645;&#x639;&#x62f;&#x644;</button>
+        <button class="clear-btn" onclick="clearSubjectGrades()">&#x645;&#x633;&#x62d; &#x627;&#x644;&#x643;&#x644;</button>
+        
+        <div class="subject-result">
+          <div class="subject-average" id="subjectAverage">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="copyright">
+      <div>2024 &#x62c;&#x645;&#x64a;&#x639; &#x627;&#x644;&#x62d;&#x642;&#x648;&#x642; &#x645;&#x62d;&#x641;&#x648;&#x638;&#x629;</div>
+      <div>
+        <span>&#x62a;&#x635;&#x645;&#x64a;&#x645; &#x648;&#x62a;&#x637;&#x648;&#x64a;&#x631;:</span>
+        <strong>YAHYA THABIT</strong>
+        <span class="morocco-flag">&#x1f1f2;&#x1f1e6;</span>
+      </div>
+      <a href="https://www.instagram.com/yahya_tabit_" class="social" target="_blank">
+        &#x62a;&#x627;&#x628;&#x639;&#x646;&#x627; &#x639;&#x644;&#x649; &#x627;&#x644;&#x625;&#x646;&#x633;&#x62a;&#x63a;&#x631;&#x627;&#x645;: @yahya_tabit_
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>function login() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const gender = document.getElementById('gender').value;
+  const passwordInput = document.getElementById('password');
+  const errorMessage = document.querySelector('.error-message');
+  passwordInput.classList.remove('invalid-input');
+  errorMessage.style.display = 'none';
+  const numbers = password.match(/\d/g) || [];
+  const letters = password.match(/[a-zA-Z]/g) || [];
+  if (!username || !password || !gender) {
+    alert('الرجاء إدخال جميع البيانات المطلوبة');
+    return;
+  }
+  if (numbers.length < 3 || letters.length < 4) {
+    passwordInput.classList.add('invalid-input');
+    errorMessage.style.display = 'block';
+    errorMessage.textContent = 'كلمة المرور يجب أن تحتوي على 3 أرقام و 4 حروف إنجليزية على الأقل';
+    return;
+  }
+  const users = getRegisteredUsers();
+  if (users.some(u => u.username === username)) {
+    alert('اسم المستخدم موجود بالفعل');
+    return;
+  }
+  saveUser({
+    username,
+    password,
+    gender,
+    grades: {},
+    subjectGrades: {},
+    avatar: 'student'
+  });
+  document.getElementById('userDisplayName').textContent = username;
+  initAvatarOptions();
+  loadUserAvatar(username);
+  showOptions();
+}
+function validateGrade(input) {
+  let value = parseFloat(input.value);
+  if (value < 0) {
+    input.value = 0;
+  } else if (value > 20) {
+    input.value = 20;
+  }
+}
+function calculateAverage() {
+  const inputs = document.querySelectorAll('.grade-input');
+  let weightedSum = 0;
+  let totalCoefficients = 0;
+  inputs.forEach(input => {
+    if (input.value !== '') {
+      const coefficient = parseInt(input.dataset.coefficient);
+      weightedSum += parseFloat(input.value) * coefficient;
+      totalCoefficients += coefficient;
+    }
+  });
+  const average = totalCoefficients > 0 ? (weightedSum / totalCoefficients).toFixed(2) : '-';
+  document.getElementById('average').textContent = average;
+  const username = getCurrentUser();
+  if (username) {
+    const grades = {};
+    inputs.forEach(input => {
+      if (grades[input.dataset.coefficient]) {
+        grades[input.dataset.coefficient] = input.value;
+      }
+    });
+    saveUserGrades(username, grades);
+  }
+}
+function clearAll() {
+  const inputs = document.querySelectorAll('.grade-input');
+  inputs.forEach(input => {
+    input.value = '';
+  });
+  document.getElementById('average').textContent = '-';
+  const username = getCurrentUser();
+  if (username) {
+    saveUserGrades(username, {});
+  }
+}
+function logout() {
+  document.getElementById('optionsPage').style.display = 'flex';
+  document.querySelector('.container').style.display = 'none';
+  document.getElementById('subjectGradesPage').style.display = 'none';
+  document.getElementById('exam1').value = '';
+  document.getElementById('exam2').value = '';
+  document.getElementById('subjectAverage').textContent = '-';
+}
+function showOptions() {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('optionsPage').style.display = 'flex';
+}
+function showFinalGrades() {
+  document.getElementById('optionsPage').style.display = 'none';
+  document.querySelector('.container').style.display = 'block';
+  document.getElementById('subjectGradesPage').style.display = 'none';
+}
+function showSubjectGrades() {
+  document.getElementById('optionsPage').style.display = 'none';
+  document.querySelector('.container').style.display = 'none';
+  document.getElementById('subjectGradesPage').style.display = 'block';
+}
+function calculateSubjectGrade() {
+  const selectedSubject = document.getElementById('subjectSelect').value;
+  const activitiesInput = document.getElementById('activities');
+  const exam1 = parseFloat(document.getElementById('exam1').value) || 0;
+  const exam2 = parseFloat(document.getElementById('exam2').value) || 0;
+  let activities;
+  if (selectedSubject === 'math' || selectedSubject === 'sports') {
+    const average = ((exam1 + exam2) / 2).toFixed(2);
+    document.getElementById('subjectAverage').textContent = average;
+    activities = 0;
+  } else {
+    activities = parseFloat(activitiesInput.value) || 0;
+    const activitiesWeight = activities * 0.25;
+    const examsWeight = (exam1 + exam2) / 2 * 0.75;
+    const average = (activitiesWeight + examsWeight).toFixed(2);
+    document.getElementById('subjectAverage').textContent = average;
+  }
+  const username = getCurrentUser();
+  if (username) {
+    const subjectGrades = {
+      subject: selectedSubject,
+      activities: activities,
+      exam1: exam1,
+      exam2: exam2
+    };
+    saveUserSubjectGrades(username, subjectGrades);
+  }
+}
+function clearSubjectGrades() {
+  document.getElementById('activities').value = '';
+  document.getElementById('exam1').value = '';
+  document.getElementById('exam2').value = '';
+  document.getElementById('subjectAverage').textContent = '-';
+  const username = getCurrentUser();
+  if (username) {
+    saveUserSubjectGrades(username, {});
+  }
+}
+function fullLogout() {
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('optionsPage').style.display = 'none';
+  document.querySelector('.container').style.display = 'none';
+  document.getElementById('subjectGradesPage').style.display = 'none';
+  document.getElementById('username').value = '';
+  document.getElementById('password').value = '';
+  document.getElementById('gender').value = '';
+  document.getElementById('exam1').value = '';
+  document.getElementById('exam2').value = '';
+  document.getElementById('subjectAverage').textContent = '-';
+  document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+  document.getElementById('userAvatar').innerHTML = `
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="#2196f3">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+    </svg>
+  `;
+}
+function initAvatarOptions() {
+  const avatarOptions = document.querySelectorAll('.avatar-option');
+  const userAvatar = document.getElementById('userAvatar');
+  
+  avatarOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      // Remove selected class from all options
+      avatarOptions.forEach(opt => opt.classList.remove('selected'));
+      // Add selected class to clicked option
+      option.classList.add('selected');
+      
+      // Update user avatar
+      const avatarSvg = option.innerHTML;
+      userAvatar.innerHTML = avatarSvg;
+      
+      // Save selected avatar to user data
+      const username = getCurrentUser();
+      if (username) {
+        saveUserAvatar(username, option.dataset.avatar);
+      }
+    });
+  });
+}
+function saveUserAvatar(username, avatar) {
+  const users = getRegisteredUsers();
+  const userIndex = users.findIndex(u => u.username === username);
+  if (userIndex !== -1) {
+    users[userIndex].avatar = avatar;
+    localStorage.setItem('registeredUsers', JSON.stringify(users));
+  }
+}
+function loadUserAvatar(username) {
+  const users = getRegisteredUsers();
+  const user = users.find(u => u.username === username);
+  if (user && user.avatar) {
+    const option = document.querySelector(`[data-avatar="${user.avatar}"]`);
+    if (option) {
+      const userAvatar = document.getElementById('userAvatar');
+      userAvatar.innerHTML = option.innerHTML;
+      
+      // Update selection state
+      document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+      option.classList.add('selected');
+    }
+  }
+}
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  sidebar.classList.toggle('open');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('dark-mode');
+  localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const darkMode = localStorage.getItem('darkMode') === 'true';
+  if (darkMode) {
+    document.body.classList.add('dark-mode');
+    document.querySelector('.theme-switch input').checked = true;
+  }
+});
+
+const USERS_KEY = 'registeredUsers';
+const GRADES_KEY = 'userGrades';
+const SUBJECT_GRADES_KEY = 'userSubjectGrades';
+
+function getRegisteredUsers() {
+  return JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+}
+
+function saveUser(userData) {
+  const users = getRegisteredUsers();
+  users.push(userData);
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+}
+
+function findUser(username, password) {
+  const users = getRegisteredUsers();
+  return users.find(u => u.username === username && u.password === password);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  if (tab === 'newUser') {
+    document.querySelector('.tab-btn:first-child').classList.add('active');
+    document.getElementById('newUserForm').classList.add('active');
+  } else {
+    document.querySelector('.tab-btn:last-child').classList.add('active');
+    document.getElementById('existingUserForm').classList.add('active');
+  }
+}
+
+function loginExisting() {
+  const username = document.getElementById('existingUsername').value;
+  const password = document.getElementById('existingPassword').value;
+  const errorMessage = document.querySelector('#existingUserForm .error-message');
+  if (!username || !password) {
+    alert('الرجاء إدخال جميع البيانات المطلوبة');
+    return;
+  }
+  const user = findUser(username, password);
+  if (user) {
+    loadUserGrades(user.username);
+    loadUserSubjectGrades(user.username);
+    document.getElementById('userDisplayName').textContent = username;
+    initAvatarOptions();
+    loadUserAvatar(username);
+    showOptions();
+  } else {
+    errorMessage.style.display = 'block';
+    errorMessage.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة';
+    document.getElementById('existingPassword').classList.add('invalid-input');
+  }
+}
+
+function getCurrentUser() {
+  const users = getRegisteredUsers();
+  return users.length > 0 ? users[users.length - 1].username : null;
+}
+
+function saveUserGrades(username, grades) {
+  const stored = JSON.parse(localStorage.getItem(GRADES_KEY) || '{}');
+  stored[username] = grades;
+  localStorage.setItem(GRADES_KEY, JSON.stringify(stored));
+}
+
+function saveUserSubjectGrades(username, grades) {
+  const stored = JSON.parse(localStorage.getItem(SUBJECT_GRADES_KEY) || '{}');
+  stored[username] = grades;
+  localStorage.setItem(SUBJECT_GRADES_KEY, JSON.stringify(stored));
+}
+
+function loadUserGrades(username) {
+  const stored = JSON.parse(localStorage.getItem(GRADES_KEY) || '{}');
+  const grades = stored[username];
+  if (grades) {
+    const inputs = document.querySelectorAll('.grade-input');
+    inputs.forEach(input => {
+      if (grades[input.dataset.coefficient]) {
+        input.value = grades[input.dataset.coefficient];
+      }
+    });
+    calculateAverage();
+  }
+}
+
+function loadUserSubjectGrades(username) {
+  const stored = JSON.parse(localStorage.getItem(SUBJECT_GRADES_KEY) || '{}');
+  const grades = stored[username];
+  if (grades) {
+    document.getElementById('subjectSelect').value = grades.subject;
+    document.getElementById('activities').value = grades.activities || '';
+    document.getElementById('exam1').value = grades.exam1 || '';
+    document.getElementById('exam2').value = grades.exam2 || '';
+    handleSubjectChange();
+    calculateSubjectGrade();
+  }
+}
+</script>
+</body></html>
